@@ -10,7 +10,7 @@ let uri = "http://m.wuxiaworld.co/Peerless-Martial-God/all.html";
 const baseUri = "http://m.wuxiaworld.co/Peerless-Martial-God";
 console.log("Index Uri: ", uri);
 let storages = [];
-async function getLinks() {
+function getLinks() {
   let options = {
     uri: uri,
     transform: function(body) {
@@ -21,37 +21,32 @@ async function getLinks() {
     let selector = $("a");
     // console.log(typeof selector);
     // console.log("selector", selector);
-    async function processLinks(selector) {
-      selector.each(function() {
-        try {
-          let title = $(this).text();
-          let link = $(this).attr("href");
-          if (title && link && link.charAt(0) !== "/") {
-            if (!isAbsolute.test(link)) {
-              link = baseUri + link;
-            }
-            console.log(title, link);
-            async(function(){
-                let chapter = await iterator(link);
-            }).then(console.log(chapter))
-            // let chp = iterator(link);
-            //   iterator(uri)
-            //     .then(function(result) {
-            //       // ...
-            //       console.log(result);
-            //     })
-            //     .catch(function(err) {
-            //       // if you have an error
-            //       console.err("shits fucked", err);
-            //     });
-            //   console.log(chp);
+    let obj = {};
+    selector.each(function() {
+      try {
+        let title = $(this).text();
+        let link = $(this).attr("href");
+        if (title && link && link.charAt(0) !== "/") {
+          if (!isAbsolute.test(link)) {
+            link = baseUri + link;
           }
-        } catch (err) {
-          console.error("Error: ", err);
+          // console.log(title, link);
+          obj[title] = link;
+          // let chapter = iterator(link);
         }
-      });
+      } catch (err) {
+        console.error("Error: ", err);
+      }
+    });
+    let promise = [];
+    for (let key in obj) {
+      let chapter = iterator(obj[key]);
+      promise.push(chapter);
+      // console.log(chapter);
     }
-    processLinks(selector);
+    Promise.all(promise).then(function(values) {
+      console.log(values);
+    });
   });
 }
 getLinks();

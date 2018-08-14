@@ -16,12 +16,12 @@ async function iterator(uri) {
   return rp(options)
     .then(function($) {
       let selector = $("#chaptercontent");
-      // return selector;
+      return selector.text();
       console.log("selector", selector);
       // fs.appendFileSync(filename, title);
       selector.each(function(index) {
         console.log($(this));
-        return $(this);
+        return $(this).text();
       });
     })
     .catch(function(err) {

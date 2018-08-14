@@ -16,7 +16,7 @@ async function iterator(uri) {
   return rp(options)
     .then(function($) {
       let selector = $("#chaptercontent");
-      return selector.text();
+      return selector;
       console.log("selector", selector);
       // fs.appendFileSync(filename, title);
       selector.each(function(index) {

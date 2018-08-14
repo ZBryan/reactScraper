@@ -28,9 +28,9 @@ function getLinks() {
         let link = $(this).attr("href");
         if (title && link && link.charAt(0) !== "/") {
           if (!isAbsolute.test(link)) {
-            link = baseUri + link;
+            link = baseUri + "/" + link;
           }
-          // console.log(title, link);
+          console.log(title, link);
           obj[title] = link;
           // let chapter = iterator(link);
         }

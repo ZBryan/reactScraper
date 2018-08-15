@@ -21,31 +21,43 @@ function getLinks() {
     let selector = $("a");
     // console.log(typeof selector);
     // console.log("selector", selector);
-    let obj = {};
-    selector.each(function() {
+    // let obj = {};
+    let promise = [];
+
+    selector.each(function(index) {
       try {
         let title = $(this).text();
         let link = $(this).attr("href");
-        if (title && link && link.charAt(0) !== "/") {
+        // console.log(index);
+        if (
+          index < 50 &&
+          title &&
+          link &&
+          link.charAt(0) !== "/" &&
+          link.charAt(0) !== "#"
+        ) {
           if (!isAbsolute.test(link)) {
             link = baseUri + "/" + link;
           }
-          console.log(title, link);
-          obj[title] = link;
-          // let chapter = iterator(link);
+          //   console.log(title, link);
+          //   obj[title] = link;
+          let chapter = iterator(title, link);
+          promise.push(chapter);
         }
       } catch (err) {
         console.error("Error: ", err);
       }
     });
-    let promise = [];
-    for (let key in obj) {
-      let chapter = iterator(obj[key]);
-      promise.push(chapter);
-      // console.log(chapter);
-    }
+    // let promise = [];
+    // for (let key in obj) {
+    //   let chapter = iterator(obj[key]);
+    //   promise.push(chapter);
+    //   // console.log(chapter);
+    // }
     Promise.all(promise).then(function(values) {
-      console.log(values);
+      values.forEach(function(value, index) {
+        console.log(value.title);
+      });
     });
   });
 }

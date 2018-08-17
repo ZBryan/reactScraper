@@ -10,20 +10,12 @@ async function iterator(title, uri) {
       return cheerio.load(body);
     }
   };
-  // console.log("Uri Passed", uri);
-  // console.log("options", options);
 
   return rp(options)
     .then(function($) {
       let chapter = $("#chaptercontent").html();
       let obj = {};
       return { title, chapter };
-      // console.log("selector", selector);
-      // // fs.appendFileSync(filename, title);
-      // selector.each(function(index) {
-      //   console.log($(this));
-      //   return $(this).text();
-      // });
     })
     .catch(function(err) {
       console.error(err);

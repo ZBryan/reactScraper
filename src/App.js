@@ -1,8 +1,18 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import base from "./base";
 
 class App extends Component {
+  state = {};
+
+  componentDidMount() {
+    // this.ref = base.syncState(`this.props.match`);
+  }
+
+  componentWillUnmount() {
+    base.removeBinding(this.ref);
+  }
   render() {
     return (
       <div className="App">

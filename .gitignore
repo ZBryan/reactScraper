@@ -59,3 +59,6 @@ typings/
 
 # next.js build output
 .next
+
+# Variables and api keys
+src/base.js

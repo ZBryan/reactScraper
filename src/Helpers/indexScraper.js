@@ -19,16 +19,14 @@ function getLinks() {
   };
   rp(options).then(function($) {
     let selector = $("a");
-    // console.log(typeof selector);
-    // console.log("selector", selector);
-    // let obj = {};
+
     let promise = [];
 
     selector.each(function(index) {
       try {
         let title = $(this).text();
         let link = $(this).attr("href");
-        // console.log(index);
+
         if (
           index < 50 &&
           title &&
@@ -39,8 +37,7 @@ function getLinks() {
           if (!isAbsolute.test(link)) {
             link = baseUri + "/" + link;
           }
-          //   console.log(title, link);
-          //   obj[title] = link;
+
           let chapter = iterator(title, link);
           promise.push(chapter);
         }
@@ -48,12 +45,7 @@ function getLinks() {
         console.error("Error: ", err);
       }
     });
-    // let promise = [];
-    // for (let key in obj) {
-    //   let chapter = iterator(obj[key]);
-    //   promise.push(chapter);
-    //   // console.log(chapter);
-    // }
+
     Promise.all(promise).then(function(values) {
       values.forEach(function(value, index) {
         console.log(value.title);

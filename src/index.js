@@ -1,9 +1,8 @@
 import React from "react";
 import { render } from "react-dom";
 import "./index.css";
-import App from "./App";
+import Router from "./Components/Router";
 import registerServiceWorker from "./registerServiceWorker";
-import NovelPicker from "./Components/NovelPicker";
 
-render(<NovelPicker />, document.getElementById("main"));
+render(<Router />, document.getElementById("main"));
 registerServiceWorker();

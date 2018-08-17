@@ -5,6 +5,10 @@ class NovelPicker extends Component {
   render() {
     return (
       <Form clasName="novelPicker">
+        <Label htmlFor="name">
+          <Input type="text" id="name" required placeholder="Novel name" />
+          <span>Name to use for novel</span>
+        </Label>
         <Label htmlFor="index">
           <Input
             type="text"
@@ -41,11 +45,14 @@ const Input = styled.input`
   border: none;
   border-radius: 3px;
   width: 30rem;
-  max-width: 100%;
+  max-width: 50%;
+  display: flex;
+  justify-content: flex-start;
 `;
 
 const Label = styled.label`
-  display: block;
+  display: flex;
+  align-items: center;
 `;
 const Button = styled.button`
   color: palevioletred;

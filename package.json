@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
+    "dotenv": "^6.0.0",
     "firebase": "^5.4.0",
     "re-base": "^4.0.0",
     "react": "^16.4.2",

@@ -8,10 +8,17 @@ import styled from "styled-components";
 import ExistingNovels from "./ExistingNovels";
 
 class App extends Component {
-  state = {};
+  state = {
+    novel: {},
+    chapter: {}
+  };
 
   componentDidMount() {
-    // this.ref = base.syncState(`this.props.match`);
+    const { params } = this.props.match;
+    this.ref = base.syncState(`${params.novelId}`, {
+      context: this,
+      state: "novel"
+    });
   }
 
   componentWillUnmount() {
@@ -19,9 +26,17 @@ class App extends Component {
   }
 
   render() {
+    const { params } = this.props.match;
+
     return (
       <div className="App">
-        <Header pageHeading={this.chapter || "Light Novel Web Scraper"} />
+        <Header
+          pageHeading={
+            params.novelId
+              ? params.novelId.replace("-", " ")
+              : "Light Novel Web Scraper"
+          }
+        />
         <Div className="search">
           <SearchForm />
         </Div>

@@ -1,25 +1,54 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-
+import { getLinks } from "../Helpers/indexScraper";
 class NovelPicker extends Component {
+  novelName = React.createRef();
+  indexRef = React.createRef();
+  baseRef = React.createRef();
+
+  getIndexLinks = async e => {
+    e.preventDefault();
+    let name = this.novelName.current.value;
+    let index = this.indexRef.current.value;
+    let base = this.baseRef.current.value;
+    // console.log(name, index, base);
+    getLinks(index, base);
+  };
+
   render() {
     return (
-      <Form clasName="novelPicker">
-        <Label htmlFor="name">
-          <Input type="text" id="name" required placeholder="Novel name" />
+      <Form clasName="novelPicker" onSubmit={this.getIndexLinks}>
+        <Label htmlFor="novelName">
+          <Input
+            type="text"
+            id="novelName"
+            name="novelName"
+            innerRef={this.novelName}
+            placeholder="Novel name"
+            defaultValue="Peerless"
+          />
           <span>Name to use for novel</span>
         </Label>
         <Label htmlFor="index">
           <Input
             type="text"
             id="index"
-            required
+            name="index"
+            innerRef={this.indexRef}
             placeholder="Novel index Url"
+            defaultValue="http://m.wuxiaworld.co/Peerless-Martial-God/all.html"
           />
           <span>Index Url</span>
         </Label>
         <Label htmlFor="base">
-          <Input type="text" id="base" required placeholder="Novel base Url" />
+          <Input
+            type="text"
+            id="base"
+            name="base"
+            innerRef={this.baseRef}
+            placeholder="Novel base Url"
+            defaultValue={"http://m.wuxiaworld.co/Peerless-Martial-God/"}
+          />
           <span>Base Url, what chapters should be appended to</span>
         </Label>
 

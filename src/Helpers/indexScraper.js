@@ -1,18 +1,24 @@
-let request = "request";
-let rp = require("request-promise");
-let cheerio = require("cheerio");
-let fs = require("fs");
-const { iterator } = require("./contentScraper");
+// import request from "request";
+import rp from "request-promise";
+import cheerio from "cheerio";
+// import fs from "fs";
+import { iterator } from "./contentScraper";
 
 const isAbsolute = new RegExp("^([a-z]+://|//)", "i");
 // setup for wuxia
-let uri = "http://m.wuxiaworld.co/Peerless-Martial-God/all.html";
-const baseUri = "http://m.wuxiaworld.co/Peerless-Martial-God";
-console.log("Index Uri: ", uri);
-let storages = [];
-function getLinks() {
+// let uri = "http://m.wuxiaworld.co/Peerless-Martial-God/all.html";
+// const baseUri1 = "http://m.wuxiaworld.co/Peerless-Martial-God";
+// console.log("Index Uri: ", uri);
+// let storages = [];
+export async function getLinks(uri, baseUri) {
+  // console.log(uri, baseUri);
   let options = {
     uri: uri,
+    // headers: {
+    //   "User-Agent": "Request-Promise",
+    //   "Access-Control-Allow-Origin": "*",
+    //   "Access-Control-Allow-Headers": "Origin, Content-Type, X-Auth-Token"
+    // },
     transform: function(body) {
       return cheerio.load(body);
     }
@@ -28,7 +34,7 @@ function getLinks() {
         let link = $(this).attr("href");
 
         if (
-          index < 50 &&
+          index < 10 &&
           title &&
           link &&
           link.charAt(0) !== "/" &&
@@ -48,9 +54,9 @@ function getLinks() {
 
     Promise.all(promise).then(function(values) {
       values.forEach(function(value, index) {
-        console.log(value.title);
+        console.log(value.chapter);
+        return value;
       });
     });
   });
 }
-getLinks();

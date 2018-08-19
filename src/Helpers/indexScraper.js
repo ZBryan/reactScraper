@@ -19,44 +19,77 @@ export async function getLinks(uri, baseUri) {
     //   "Access-Control-Allow-Origin": "*",
     //   "Access-Control-Allow-Headers": "Origin, Content-Type, X-Auth-Token"
     // },
-    transform: function(body) {
+    transform: body => {
       return cheerio.load(body);
     }
   };
-  rp(options).then(function($) {
-    let selector = $("a");
+  let $ = await rp(options);
+  let selector = $("a");
+  let promise = [];
 
-    let promise = [];
+  selector.each(function(index) {
+    try {
+      let title = $(this).text();
+      let link = $(this).attr("href");
 
-    selector.each(function(index) {
-      try {
-        let title = $(this).text();
-        let link = $(this).attr("href");
-
-        if (
-          index < 10 &&
-          title &&
-          link &&
-          link.charAt(0) !== "/" &&
-          link.charAt(0) !== "#"
-        ) {
-          if (!isAbsolute.test(link)) {
-            link = baseUri + "/" + link;
-          }
-
-          let chapter = iterator(title, link);
-          promise.push(chapter);
+      if (
+        index < 10 &&
+        title &&
+        link &&
+        link.charAt(0) !== "/" &&
+        link.charAt(0) !== "#"
+      ) {
+        if (!isAbsolute.test(link)) {
+          link = baseUri + "/" + link;
         }
-      } catch (err) {
-        console.error("Error: ", err);
-      }
-    });
 
-    Promise.all(promise).then(function(values) {
-      values.forEach(function(value, index) {
-        console.log(value.chapter);
-        return value;
-      });
-    });
+        let chapter = iterator(title, link);
+        // console.log("chapter", chapter);
+        promise.push(chapter);
+      }
+    } catch (err) {
+      console.error("Error: ", err);
+    }
   });
+
+  return promise;
+  // rp(options).then(($) => {
+  //   let selector = $("a");
+
+  //   let promise = [];
+
+  //   selector.each(function(index) {
+  //     try {
+  //       let title = $(this).text();
+  //       let link = $(this).attr("href");
+
+  //       if (
+  //         index < 10 &&
+  //         title &&
+  //         link &&
+  //         link.charAt(0) !== "/" &&
+  //         link.charAt(0) !== "#"
+  //       ) {
+  //         if (!isAbsolute.test(link)) {
+  //           link = baseUri + "/" + link;
+  //         }
+
+  //         let chapter = await iterator(title, link);
+  //         console.log("chapter", chapter);
+  //         promise.push(chapter);
+  //       }
+  //     } catch (err) {
+  //       console.error("Error: ", err);
+  //     }
+  //   });
+
+  //   return Promise.all(promise).then(values => {
+  //     console.log("datat as values", values);
+  //     return values;
+  //     values.forEach((value, index) => {
+  //       console.log(value.title);
+  //       return value;
+  //     });
+  //   });
+  // });
 }

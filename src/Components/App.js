@@ -24,7 +24,11 @@ class App extends Component {
   componentWillUnmount() {
     base.removeBinding(this.ref);
   }
-
+  passDataToState = data => {
+    Promise.all(data).then(d => {
+      console.log("data d", d);
+    });
+  };
   render() {
     const { params } = this.props.match;
 
@@ -41,7 +45,7 @@ class App extends Component {
           <SearchForm />
         </Div>
         <Div className="getNovel">
-          <NovelPicker />
+          <NovelPicker passDataToState={this.passDataToState} />
         </Div>
         <ExistingNovels />
       </div>

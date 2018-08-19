@@ -12,7 +12,9 @@ class NovelPicker extends Component {
     let index = this.indexRef.current.value;
     let base = this.baseRef.current.value;
     // console.log(name, index, base);
-    getLinks(index, base);
+    let data = await getLinks(index, base);
+    // console.log("d", data);
+    this.props.passDataToState(data);
   };
 
   render() {

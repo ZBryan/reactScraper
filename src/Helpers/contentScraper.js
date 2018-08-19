@@ -12,13 +12,9 @@ export async function iterator(title, uri) {
     }
   };
 
-  return rp(options)
-    .then(function($) {
-      let chapter = $("#chaptercontent").html();
-      // let obj = {};
-      return { title, chapter };
-    })
-    .catch(function(err) {
-      console.error(err);
-    });
+  let $ = await rp(options);
+
+  let chapter = $("#chaptercontent").html();
+  // let obj = {};
+  return { title, chapter };
 }

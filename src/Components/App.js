@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "../App.css";
-import base from "../base";
+import base from "./base";
 import NovelPicker from "./NovelPicker";
 import SearchForm from "./SearchForm";
 import Header from "./Header";
@@ -23,7 +23,7 @@ class App extends Component {
   }
 
   componentWillUnmount() {
-    base.removeBinding(this.ref);
+    // base.removeBinding(this.ref);
   }
   loadNovel = chapter => {
     let title = chapter["name"];

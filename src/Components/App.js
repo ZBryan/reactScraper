@@ -9,8 +9,9 @@ import ExistingNovels from "./ExistingNovels";
 
 class App extends Component {
   state = {
-    novel: {},
-    chapter: {}
+    novels: {},
+    chapters: {},
+    novelIndex: {}
   };
 
   componentDidMount() {
@@ -24,9 +25,16 @@ class App extends Component {
   componentWillUnmount() {
     base.removeBinding(this.ref);
   }
-  passDataToState = data => {
+  loadNovel = chapter => {
+    let title = chapter["name"];
+    let data = chapter["data"];
     Promise.all(data).then(d => {
       console.log("data d", d);
+      const novels = { ...this.state.novel };
+      const novelIndex = { ...this.state.index };
+      novels[`${title}${Date.now()}`] = { title: d };
+      novelIndex[`${title}${Date.now()}`] = { title, count: d.length };
+      this.setState({ novels, novelIndex });
     });
   };
   render() {
@@ -45,7 +53,7 @@ class App extends Component {
           <SearchForm />
         </Div>
         <Div className="getNovel">
-          <NovelPicker passDataToState={this.passDataToState} />
+          <NovelPicker passDataToState={this.loadNovel} />
         </Div>
         <ExistingNovels />
       </div>

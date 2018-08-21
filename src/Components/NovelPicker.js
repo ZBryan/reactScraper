@@ -8,13 +8,15 @@ class NovelPicker extends Component {
 
   getIndexLinks = async e => {
     e.preventDefault();
-    // let name = this.novelName.current.value;
+    let name = this.novelName.current.value;
     let index = this.indexRef.current.value;
     let base = this.baseRef.current.value;
-    // console.log(name, index, base);
+    console.log(name, index, base);
     let data = await getLinks(index, base);
     // console.log("d", data);
-    this.props.passDataToState(data);
+    let chp = { name, data };
+    console.log(chp);
+    this.props.passDataToState(chp);
   };
 
   render() {

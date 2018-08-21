@@ -15,11 +15,11 @@ class App extends Component {
   };
 
   componentDidMount() {
-    const { params } = this.props.match;
-    this.ref = base.syncState(`${params.novelId}`, {
-      context: this,
-      state: "novel"
-    });
+    // const { params } = this.props.match;
+    // this.ref = base.syncState(`${params.novelId}`, {
+    //   context: this,
+    //   state: "novel"
+    // });
   }
 
   componentWillUnmount() {

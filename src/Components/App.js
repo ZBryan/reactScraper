@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "../App.css";
 import base from "./base";
+import { config } from "dotenv";
 import NovelPicker from "./NovelPicker";
 import SearchForm from "./SearchForm";
 import Header from "./Header";
@@ -13,7 +14,6 @@ class App extends Component {
     chapters: {},
     novelIndex: {}
   };
-
   componentDidMount() {
     // const { params } = this.props.match;
     // this.ref = base.syncState(`${params.novelId}`, {
@@ -39,6 +39,7 @@ class App extends Component {
   };
   render() {
     const { params } = this.props.match;
+    console.log("env", process.env.REACT_APP_FIREBASE_DATABASE_URL);
 
     return (
       <div className="App">

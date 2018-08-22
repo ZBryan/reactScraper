@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "../App.css";
 import base from "./base";
-import { config } from "dotenv";
 import NovelPicker from "./NovelPicker";
 import SearchForm from "./SearchForm";
 import Header from "./Header";

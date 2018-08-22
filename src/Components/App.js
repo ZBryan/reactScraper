@@ -30,10 +30,10 @@ class App extends Component {
     let data = chapter["data"];
     Promise.all(data).then(d => {
       console.log("data d", d);
-      const novels = { ...this.state.novel };
-      const novelIndex = { ...this.state.index };
-      novels[`${title}${Date.now()}`] = { title: d };
-      novelIndex[`${title}${Date.now()}`] = { title, count: d.length };
+      const novels = { ...this.state.novels };
+      const novelIndex = { ...this.state.novelIndex };
+      novels[title] = { title, data: d };
+      novelIndex[title] = { title, count: d.length };
       this.setState({ novels, novelIndex });
     });
   };
@@ -55,7 +55,9 @@ class App extends Component {
         <Div className="getNovel">
           <NovelPicker passDataToState={this.loadNovel} />
         </Div>
-        <ExistingNovels />
+        {Object.keys(this.state.novels).map(key => (
+          <ExistingNovels key={key} details={this.state.novels[key]} />
+        ))}
       </div>
     );
   }

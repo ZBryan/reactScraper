@@ -2,6 +2,8 @@ import rp from "request-promise";
 import cheerio from "cheerio";
 
 export async function iterator(title, uri) {
+  uri = uri;
+
   let options = {
     uri: uri,
     transform: function(body) {

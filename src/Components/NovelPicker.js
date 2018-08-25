@@ -11,11 +11,11 @@ class NovelPicker extends Component {
     let name = this.novelName.current.value;
     let index = this.indexRef.current.value;
     let base = this.baseRef.current.value;
-    console.log(name, index, base);
-    let data = await getLinks(index, base);
-    // console.log("d", data);
+    // console.log(name, index, base);
+    let data = await getLinks(index, base, name, this.props.existing);
+    console.log("d", data);
     let chp = { name, data };
-    console.log(chp);
+    // console.log(chp);
     this.props.passDataToState(chp);
   };
 
@@ -29,7 +29,7 @@ class NovelPicker extends Component {
             name="novelName"
             innerRef={this.novelName}
             placeholder="Novel name"
-            defaultValue="Peerless"
+            defaultValue="Peerless Martial God"
           />
           <span>Name to use for novel</span>
         </Label>

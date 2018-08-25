@@ -14,32 +14,33 @@ class App extends Component {
     novelIndex: {}
   };
   componentDidMount() {
-    // const { params } = this.props.match;
-    // this.ref = base.syncState(`${params.novelId}`, {
-    //   context: this,
-    //   state: "novel"
-    // });
+    const { params } = this.props.match;
+    this.ref = base.syncState(`novels`, {
+      context: this,
+      state: "novels"
+    });
   }
 
   componentWillUnmount() {
-    // base.removeBinding(this.ref);
+    base.removeBinding(this.ref);
   }
   loadNovel = chapter => {
-    let title = chapter["name"];
+    let novel = chapter["name"];
     let data = chapter["data"];
-    Promise.all(data).then(d => {
-      console.log("data d", d);
-      const novels = { ...this.state.novels };
-      const novelIndex = { ...this.state.novelIndex };
-      novels[title] = { title, data: d };
-      novelIndex[title] = { title, count: d.length };
-      this.setState({ novels, novelIndex });
-    });
+    for (let index = 0; index < data.length; index += 50) {
+      let max = Math.min(data.length + 1, index + 51);
+      console.log("max", max);
+      const subD = data.slice(index, max);
+      Promise.all(subD).then(d => {
+        console.log("data d", d);
+        const novels = { ...this.state.novels };
+        novels[novel] = { chapters: d };
+        this.setState({ novels });
+      });
+    }
   };
   render() {
     const { params } = this.props.match;
-    console.log("env", process.env.REACT_APP_FIREBASE_DATABASE_URL);
-
     return (
       <div className="App">
         <Header
@@ -53,7 +54,10 @@ class App extends Component {
           <SearchForm />
         </Div>
         <Div className="getNovel">
-          <NovelPicker passDataToState={this.loadNovel} />
+          <NovelPicker
+            passDataToState={this.loadNovel}
+            existing={this.state.novels}
+          />
         </Div>
         {Object.keys(this.state.novels).map(key => (
           <ExistingNovels key={key} details={this.state.novels[key]} />

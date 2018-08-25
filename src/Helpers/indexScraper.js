@@ -3,26 +3,26 @@ import cheerio from "cheerio";
 import { iterator } from "./contentScraper";
 
 const isAbsolute = new RegExp("^([a-z]+://|//)", "i");
+// let base = "https://lnproxy.herokuapp.com/"
+export async function getLinks(uri, baseUri, name, existing) {
+  uri = uri;
 
-export async function getLinks(uri, baseUri) {
   let options = {
     uri: uri,
-
     transform: body => {
       return cheerio.load(body);
     }
   };
   let $ = await rp(options);
-  let selector = $("a");
+  let aTag = $("a");
   let promise = [];
 
-  selector.each(function(index) {
+  aTag.each(function(index) {
     try {
       let title = $(this).text();
       let link = $(this).attr("href");
-
       if (
-        index < 10 &&
+        index < 60 &&
         title &&
         link &&
         link.charAt(0) !== "/" &&
@@ -31,9 +31,17 @@ export async function getLinks(uri, baseUri) {
         if (!isAbsolute.test(link)) {
           link = baseUri + "/" + link;
         }
-
-        let chapter = iterator(title, link);
-        promise.push(chapter);
+        let existingChp = 0;
+        if (existing[name]) {
+          existingChp = existing[name].chapters.filter(ln => ln.title == title);
+        }
+        console.log(existingChp.length > 0);
+        if (!existingChp.length > 0) {
+          // console.log("index", index);
+          let chapter = iterator(title, link);
+          // chapter["index"] = index;
+          promise.push(chapter);
+        }
       }
     } catch (err) {
       console.error("Error: ", err);

@@ -16,13 +16,13 @@ export async function getLinks(uri, baseUri, name, existing) {
   let $ = await rp(options);
   let aTag = $("a");
   let promise = [];
-
+  console.log("atag", aTag.first());
   aTag.each(function(index) {
     try {
       let title = $(this).text();
       let link = $(this).attr("href");
       if (
-        index < 60 &&
+        index < 20 &&
         title &&
         link &&
         link.charAt(0) !== "/" &&
@@ -38,8 +38,7 @@ export async function getLinks(uri, baseUri, name, existing) {
         console.log(existingChp.length > 0);
         if (!existingChp.length > 0) {
           // console.log("index", index);
-          let chapter = iterator(title, link);
-          // chapter["index"] = index;
+          let chapter = iterator(title, link, index);
           promise.push(chapter);
         }
       }

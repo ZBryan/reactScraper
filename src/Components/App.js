@@ -11,31 +11,48 @@ class App extends Component {
   state = {
     novels: {},
     chapters: {},
-    novelIndex: {}
+    novelsIndex: {}
   };
   componentDidMount() {
     const { params } = this.props.match;
-    this.ref = base.syncState(`novels`, {
+    this.nRef = base.syncState(`novels`, {
       context: this,
       state: "novels"
+    });
+    this.iRef = base.syncState(`novels`, {
+      context: this,
+      state: "novelsIndex"
     });
   }
 
   componentWillUnmount() {
-    base.removeBinding(this.ref);
+    base.removeBinding(this.nRef);
+    base.removeBinding(this.iRef);
   }
-  loadNovel = chapter => {
-    let novel = chapter["name"];
-    let data = chapter["data"];
+  loadNovel = datas => {
+    let novel = datas["name"];
+    let data = datas["data"];
     for (let index = 0; index < data.length; index += 50) {
-      let max = Math.min(data.length + 1, index + 51);
+      let max = Math.min(data.length + 1, index + 50);
       console.log("max", max);
       const subD = data.slice(index, max);
       Promise.all(subD).then(d => {
         console.log("data d", d);
+        console.log(index);
         const novels = { ...this.state.novels };
-        novels[novel] = { chapters: d };
-        this.setState({ novels });
+        const novelsIndex = { ...this.state.novelsIndex };
+        const ln = novels[novel];
+        if (ln) {
+          ln.chapters.push(...d);
+          novelsIndex[novel];
+          ln.chapters.sort((a, b) => {
+            return a.index - b.index;
+          });
+        } else {
+          novels[novel] = { chapters: d };
+          // novelsIndex[novel] = { index, title };
+        }
+        this.setState({ novels, novelsIndex });
       });
     }
   };

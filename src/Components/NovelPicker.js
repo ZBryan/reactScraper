@@ -3,16 +3,16 @@ import styled from "styled-components";
 import { getLinks } from "../Helpers/indexScraper";
 class NovelPicker extends Component {
   novelName = React.createRef();
-  indexRef = React.createRef();
+  indexUrlRef = React.createRef();
   baseRef = React.createRef();
 
   getIndexLinks = async e => {
     e.preventDefault();
     let name = this.novelName.current.value;
-    let index = this.indexRef.current.value;
+    let indexUrl = this.indexUrlRef.current.value;
     let base = this.baseRef.current.value;
-    // console.log(name, index, base);
-    let data = await getLinks(index, base, name, this.props.existing);
+    // console.log(name, indexURl, base);
+    let data = await getLinks(indexUrl, base, name, this.props.existing);
     console.log("d", data);
     let chp = { name, data };
     // console.log(chp);
@@ -38,7 +38,7 @@ class NovelPicker extends Component {
             type="text"
             id="index"
             name="index"
-            innerRef={this.indexRef}
+            innerRef={this.indexUrlRef}
             placeholder="Novel index Url"
             defaultValue="http://m.wuxiaworld.co/Peerless-Martial-God/all.html"
           />

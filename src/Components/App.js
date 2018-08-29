@@ -62,16 +62,9 @@ class App extends Component {
     }
   };
   render() {
-    const { params } = this.props.match;
     return (
       <div className="App">
-        <Header
-          pageHeading={
-            params.novelId
-              ? params.novelId.replace("-", " ")
-              : "Light Novel Web Scraper"
-          }
-        />
+        <Header match={this.props.match} />
         <Div className="search">
           <SearchForm />
         </Div>

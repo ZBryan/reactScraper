@@ -7,12 +7,16 @@ export default class ExistingNovels extends Component {
     Chapters: {}
   };
   render() {
-    const { title, chapters } = this.props.details;
-    const chTitle = chapters ? chapters[chapters.length - 1].title : "None";
+    const ln = this.props.details;
+    const key = Object.keys(ln).reduce((a, b) => (ln[a] > ln[b] ? a : b));
+    const { chapter, title } = ln[key];
+
     return (
       <React.Fragment>
         <h1>{title}</h1>
-        <h4>Most recent {chTitle}</h4>
+        <h4>Most recent {key}</h4>
+        <p dangerouslySetInnerHTML={{ __html: chapter }} />
+        {/*Remove just for testing*/}
         <StyledButton type="submit">View Novel</StyledButton>
       </React.Fragment>
     );

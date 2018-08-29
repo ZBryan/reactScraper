@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import Header from "./Header";
 
 export default class Novel extends Component {
+  processChapters = () => {};
   render() {
     const { params } = this.props.match;
     const regex = /-|_/gi;
@@ -12,7 +13,11 @@ export default class Novel extends Component {
             params.novelId ? params.novelId.replace(regex, " ") : "Novel title"
           }
         />
-        <div>Novel</div>
+        <ul>
+          <li>
+            <a href="" />
+          </li>
+        </ul>
       </Fragment>
     );
   }

@@ -5,8 +5,6 @@ import { iterator } from "./contentScraper";
 const isAbsolute = new RegExp("^([a-z]+://|//)", "i");
 // let base = "https://lnproxy.herokuapp.com/"
 export async function getLinks(uri, baseUri, name, existing) {
-  uri = uri;
-
   let options = {
     uri: uri,
     transform: body => {
@@ -14,9 +12,9 @@ export async function getLinks(uri, baseUri, name, existing) {
     }
   };
   let $ = await rp(options);
-  let aTag = $("a");
+  let aTag = $("a").not('[href^="/"],[href^="mailto:"],[href^="#"]');
   let promise = [];
-  console.log("atag", aTag.first());
+  console.log("atag", aTag.length);
   aTag.each(function(index) {
     try {
       let title = $(this).text();
@@ -32,14 +30,20 @@ export async function getLinks(uri, baseUri, name, existing) {
           link = baseUri + "/" + link;
         }
         let existingChp = 0;
-        if (existing[name]) {
-          existingChp = existing[name].chapters.filter(ln => ln.title == title);
+        //If the novel exists
+        if (existing[name] && existing[name].chapter) {
+          existingChp = existing[name].chapters.filter(
+            //check for matching existing chapters
+            ln => ln.title.toUpperCase() === title.toUpperCase()
+          );
         }
         console.log(existingChp.length > 0);
         if (!existingChp.length > 0) {
           // console.log("index", index);
           let chapter = iterator(title, link, index);
           promise.push(chapter);
+        } else {
+          promise.push(existingChp);
         }
       }
     } catch (err) {

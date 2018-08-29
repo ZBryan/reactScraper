@@ -14,12 +14,11 @@ class App extends Component {
     novelsIndex: {}
   };
   componentDidMount() {
-    const { params } = this.props.match;
     this.nRef = base.syncState(`novels`, {
       context: this,
       state: "novels"
     });
-    this.iRef = base.syncState(`novels`, {
+    this.iRef = base.syncState(`novelsIndex`, {
       context: this,
       state: "novelsIndex"
     });
@@ -29,30 +28,36 @@ class App extends Component {
     base.removeBinding(this.nRef);
     base.removeBinding(this.iRef);
   }
+
   loadNovel = datas => {
     let novel = datas["name"];
     let data = datas["data"];
-    for (let index = 0; index < data.length; index += 50) {
-      let max = Math.min(data.length + 1, index + 50);
+    for (let indx = 0; indx < data.length; indx += chunkSize) {
+      let max = Math.min(data.length + 1, indx + chunkSize);
       console.log("max", max);
-      const subD = data.slice(index, max);
+      const subD = data.slice(indx, max);
       Promise.all(subD).then(d => {
         console.log("data d", d);
-        console.log(index);
+        console.log("indx", indx);
+        let merged = Object.assign(...d);
+        console.log("merged", merged);
         const novels = { ...this.state.novels };
-        const novelsIndex = { ...this.state.novelsIndex };
-        const ln = novels[novel];
-        if (ln) {
-          ln.chapters.push(...d);
-          novelsIndex[novel];
-          ln.chapters.sort((a, b) => {
-            return a.index - b.index;
-          });
-        } else {
-          novels[novel] = { chapters: d };
-          // novelsIndex[novel] = { index, title };
-        }
-        this.setState({ novels, novelsIndex });
+        // const novelsIndex = { ...this.state.novelsIndex };
+
+        // let lnIndx = d.map(a => {
+        //   a.index, a.title;
+        // });
+        // if (ln) {
+        //   ln.chapters.push(...d);
+        //   novelsIndex[novel];
+        //   ln.chapters.sort((a, b) => {
+        //     return a.index - b.index;
+        //   });
+        // } else {
+        novels[novel] = merged;
+        // novelsIndex[novel] = lnIndx;
+        // }
+        this.setState({ novels });
       });
     }
   };
@@ -91,3 +96,4 @@ export default App;
 const Div = styled.div`
   margin-top: 20px;
 `;
+const chunkSize = 50;

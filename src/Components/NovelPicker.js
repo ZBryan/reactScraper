@@ -22,8 +22,8 @@ class NovelPicker extends Component {
   render() {
     return (
       <Form clasName="novelPicker" onSubmit={this.getIndexLinks}>
-        <Label htmlFor="novelName">
-          <Input
+        <StyledLabel htmlFor="novelName">
+          <StyledInput
             type="text"
             id="novelName"
             name="novelName"
@@ -32,9 +32,9 @@ class NovelPicker extends Component {
             defaultValue="Peerless Martial God"
           />
           <span>Name to use for novel</span>
-        </Label>
-        <Label htmlFor="index">
-          <Input
+        </StyledLabel>
+        <StyledLabel htmlFor="index">
+          <StyledInput
             type="text"
             id="index"
             name="index"
@@ -43,9 +43,9 @@ class NovelPicker extends Component {
             defaultValue="http://m.wuxiaworld.co/Peerless-Martial-God/all.html"
           />
           <span>Index Url</span>
-        </Label>
-        <Label htmlFor="base">
-          <Input
+        </StyledLabel>
+        <StyledLabel htmlFor="base">
+          <StyledInput
             type="text"
             id="base"
             name="base"
@@ -54,9 +54,9 @@ class NovelPicker extends Component {
             defaultValue={"http://m.wuxiaworld.co/Peerless-Martial-God/"}
           />
           <span>Base Url, what chapters should be appended to</span>
-        </Label>
+        </StyledLabel>
 
-        <Button type="submit">Get Novel</Button>
+        <StyledButton type="submit">Get Novel</StyledButton>
       </Form>
     );
   }
@@ -70,7 +70,7 @@ const Form = styled.form`
   display: block;
 `;
 
-const Input = styled.input`
+const StyledInput = styled.input`
   padding: 0.5em;
   margin: 0.5em;
   color: #000;
@@ -83,11 +83,11 @@ const Input = styled.input`
   justify-content: flex-start;
 `;
 
-const Label = styled.label`
+const StyledLabel = styled.label`
   display: flex;
   align-items: center;
 `;
-const Button = styled.button`
+const StyledButton = styled.button`
   color: palevioletred;
   font-size: 1em;
   margin: 1em;

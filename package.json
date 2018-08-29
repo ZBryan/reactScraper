@@ -5,6 +5,7 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
     "firebase": "^5.4.0",
+    "netlify-lambda": "^0.4.0",
     "re-base": "^4.0.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",

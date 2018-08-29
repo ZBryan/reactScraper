@@ -2,8 +2,6 @@ import rp from "request-promise";
 import cheerio from "cheerio";
 
 export async function iterator(title, uri, index) {
-  uri = uri;
-
   let options = {
     uri: uri,
     transform: function(body) {
@@ -14,5 +12,6 @@ export async function iterator(title, uri, index) {
   let $ = await rp(options);
 
   let chapter = $("#chaptercontent").html();
-  return { title, chapter, index };
+  let ln = {};
+  return (ln = { [index]: { title, chapter } });
 }

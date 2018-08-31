@@ -14,9 +14,7 @@ export default class Novel extends Component {
           }
         />
         <ul>
-          <li>
-            <a href="" />
-          </li>
+          <li>{/* <a href="" /> */}</li>
         </ul>
       </Fragment>
     );

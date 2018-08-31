@@ -4,7 +4,7 @@ export default class Header extends Component {
   render() {
     const { params } = this.props.match;
     const pageHeading = params.novelId
-      ? params.novelId.replace("-", " ")
+      ? params.novelId.split("-").join(" ")
       : "Light Novel Web Scraper";
     return (
       <header className="top">

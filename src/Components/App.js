@@ -33,30 +33,31 @@ class App extends Component {
     let novel = datas["name"];
     let data = datas["data"];
     for (let indx = 0; indx < data.length; indx += chunkSize) {
-      let max = Math.min(data.length + 1, indx + chunkSize);
+      let max = Math.min(data.length, indx + chunkSize);
       console.log("max", max);
       const subD = data.slice(indx, max);
       Promise.all(subD).then(d => {
         console.log("data d", d);
         console.log("indx", indx);
-        let merged = Object.assign(...d);
-        console.log("merged", merged);
+        // let merged = Object.assign(...d);
+        // console.log("merged", merged);
         const novels = { ...this.state.novels };
-        // const novelsIndex = { ...this.state.novelsIndex };
-
-        // let lnIndx = d.map(a => {
-        //   a.index, a.title;
-        // });
-        // if (ln) {
-        //   ln.chapters.push(...d);
-        //   novelsIndex[novel];
-        //   ln.chapters.sort((a, b) => {
-        //     return a.index - b.index;
-        //   });
-        // } else {
-        novels[novel] = merged;
-        // novelsIndex[novel] = lnIndx;
+        console.log("novels", novels);
+        if (!novels[novel]) {
+          novels[novel] = [];
+        }
+        if (!novels[novel][indx]) {
+          novels[novel][indx] = [];
+        }
+        const existing = { ...novels[novel][indx] };
+        console.log("e", existing);
+        // const updated = Object.assign(merged, existing);
+        // console.log("updated", updated);
+        // if (!novels[novel][indx]) {
+        //   novels[novel][indx] = {};
         // }
+        novels[novel][indx] = d;
+
         this.setState({ novels });
       });
     }
@@ -72,6 +73,7 @@ class App extends Component {
           <NovelPicker
             passDataToState={this.loadNovel}
             existing={this.state.novels}
+            chunkSize={chunkSize}
           />
         </Div>
         {Object.keys(this.state.novels).map(key => (

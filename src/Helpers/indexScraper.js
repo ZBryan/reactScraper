@@ -3,8 +3,7 @@ import cheerio from "cheerio";
 import { iterator } from "./contentScraper";
 
 const isAbsolute = new RegExp("^([a-z]+://|//)", "i");
-// let base = "https://lnproxy.herokuapp.com/"
-export async function getLinks(uri, baseUri, name, existing) {
+export async function getLinks(uri, baseUri, name, state, chunkSize) {
   let options = {
     uri: uri,
     transform: body => {
@@ -12,34 +11,28 @@ export async function getLinks(uri, baseUri, name, existing) {
     }
   };
   let $ = await rp(options);
-  let aTag = $("a").not('[href^="/"],[href^="mailto:"],[href^="#"]');
+  let aTag = $("a").not('[href^="/"],[href^="mailto:"],[href^="#"],[title=""]');
   let promise = [];
   console.log("atag", aTag.length);
   aTag.each(function(index) {
     try {
       let title = $(this).text();
       let link = $(this).attr("href");
-      if (
-        index < 20 &&
-        title &&
-        link &&
-        link.charAt(0) !== "/" &&
-        link.charAt(0) !== "#"
-      ) {
+      if (index < 10 && title) {
         if (!isAbsolute.test(link)) {
           link = baseUri + "/" + link;
         }
-        let existingChp = 0;
+        console.log("Index", index);
+        let existingChp = null;
         //If the novel exists
-        if (existing[name] && existing[name].chapter) {
-          existingChp = existing[name].chapters.filter(
-            //check for matching existing chapters
-            ln => ln.title.toUpperCase() === title.toUpperCase()
-          );
+        let chunk = Math.floor(index / chunkSize);
+        console.log("chunk", chunk);
+        if (state[name] && state[name][chunk]) {
+          existingChp = state[name][chunk][index - 1];
+
+          console.log("existing chapter", existingChp);
         }
-        console.log(existingChp.length > 0);
-        if (!existingChp.length > 0) {
-          // console.log("index", index);
+        if (!existingChp) {
           let chapter = iterator(title, link, index);
           promise.push(chapter);
         } else {

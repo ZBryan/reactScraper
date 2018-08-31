@@ -12,6 +12,7 @@ export async function iterator(title, uri, index) {
   let $ = await rp(options);
 
   let chapter = $("#chaptercontent").html();
-  let ln = {};
-  return (ln = { [index]: { title, chapter } });
+  const ln = { title, chapter, index };
+  // console.log("ln scr", ln);
+  return ln;
 }

@@ -7,17 +7,29 @@ export default class ExistingNovels extends Component {
     Chapters: {}
   };
   render() {
+    // console.log(this.props.details);
+    // const len = this.props.details.length - 1;
     const ln = this.props.details;
+    // console.log("length", len);
+    // console.log("ln", ln);
     const key = Object.keys(ln).reduce((a, b) => (ln[a] > ln[b] ? a : b));
     const { chapter, title } = ln[key];
-
+    let handleClick = e => {
+      e.preventDefault();
+      console.log("clicky");
+    };
     return (
       <React.Fragment>
         <h1>{title}</h1>
         <h4>Most recent {key}</h4>
-        <p dangerouslySetInnerHTML={{ __html: chapter }} />
+        {/* <div
+          contentEditable="true"
+          dangerouslySetInnerHTML={{ __html: chapter }}
+        /> */}
         {/*Remove just for testing*/}
-        <StyledButton type="submit">View Novel</StyledButton>
+        <form className="novelViewer" onSubmit={handleClick}>
+          <StyledButton type="submit">View Novel</StyledButton>
+        </form>
       </React.Fragment>
     );
   }

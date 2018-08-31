@@ -8,11 +8,17 @@ class NovelPicker extends Component {
 
   getIndexLinks = async e => {
     e.preventDefault();
-    let name = this.novelName.current.value;
+    let name = this.novelName.current.value.split(" ").join("-");
     let indexUrl = this.indexUrlRef.current.value;
     let base = this.baseRef.current.value;
     // console.log(name, indexURl, base);
-    let data = await getLinks(indexUrl, base, name, this.props.existing);
+    let data = await getLinks(
+      indexUrl,
+      base,
+      name,
+      this.props.existing,
+      this.props.chunkSize
+    );
     console.log("d", data);
     let chp = { name, data };
     // console.log(chp);
@@ -21,7 +27,7 @@ class NovelPicker extends Component {
 
   render() {
     return (
-      <Form clasName="novelPicker" onSubmit={this.getIndexLinks}>
+      <StyledForm className="novelPicker" onSubmit={this.getIndexLinks}>
         <StyledLabel htmlFor="novelName">
           <StyledInput
             type="text"
@@ -57,7 +63,7 @@ class NovelPicker extends Component {
         </StyledLabel>
 
         <StyledButton type="submit">Get Novel</StyledButton>
-      </Form>
+      </StyledForm>
     );
   }
 }
@@ -66,7 +72,7 @@ export default NovelPicker;
 
 // styling
 
-const Form = styled.form`
+const StyledForm = styled.form`
   display: block;
 `;
 

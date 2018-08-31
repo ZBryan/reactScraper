@@ -1,5 +1,5 @@
 import Rebase from "re-base";
-import firebase from "firebase";
+import firebase from "firebase/app";
 import "firebase/app";
 import "firebase/auth";
 import "firebase/database";

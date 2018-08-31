@@ -5,14 +5,9 @@ import "firebase/auth";
 import "firebase/database";
 
 const firebaseApp = firebase.initializeApp({
-  apiKey:
-    process.env.REACT_APP_FIREBASE_API_KEY ||
-    "AIzaSyDakgIeDEZhZZwLM8qR_eDQ11YeMOGKyWs",
-  authDomain:
-    process.env.REACT_APP_FIREBASE_AUTH_DOMAIN || "lnscraper.firebaseapp.com",
-  databaseURL:
-    process.env.REACT_APP_FIREBASE_DATABASE_URL ||
-    "https://lnscraper.firebaseio.com"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL
 });
 const base = Rebase.createClass(firebaseApp.database());
 

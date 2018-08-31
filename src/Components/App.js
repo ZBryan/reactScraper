@@ -30,34 +30,31 @@ class App extends Component {
   }
 
   loadNovel = datas => {
-    let novel = datas["name"];
+    let novelName = datas["name"];
     let data = datas["data"];
     for (let indx = 0; indx < data.length; indx += chunkSize) {
       let max = Math.min(data.length, indx + chunkSize);
-      console.log("max", max);
+      // console.log("max", max);
       const subD = data.slice(indx, max);
       Promise.all(subD).then(d => {
-        console.log("data d", d);
-        console.log("indx", indx);
-        // let merged = Object.assign(...d);
-        // console.log("merged", merged);
+        // console.log("data d", d);
+        // console.log("indx", indx);
         const novels = { ...this.state.novels };
-        console.log("novels", novels);
-        if (!novels[novel]) {
-          novels[novel] = [];
+        // console.log("novels", novels);
+        if (!novels[novelName]) {
+          novels[novelName] = [];
         }
-        if (!novels[novel][indx]) {
-          novels[novel][indx] = [];
+        if (
+          !novels[novelName]["latest"] ||
+          novels[novelName]["latest"] < indx
+        ) {
+          novels[novelName]["latest"] = indx;
         }
-        const existing = { ...novels[novel][indx] };
-        console.log("e", existing);
-        // const updated = Object.assign(merged, existing);
-        // console.log("updated", updated);
-        // if (!novels[novel][indx]) {
-        //   novels[novel][indx] = {};
-        // }
-        novels[novel][indx] = d;
+        if (!novels[novelName][indx]) {
+          novels[novelName][indx] = [];
+        }
 
+        novels[novelName][indx] = d;
         this.setState({ novels });
       });
     }
@@ -77,7 +74,10 @@ class App extends Component {
           />
         </Div>
         {Object.keys(this.state.novels).map(key => (
-          <ExistingNovels key={key} details={this.state.novels[key]} />
+          <ExistingNovels
+            key={key}
+            details={this.state.novels[key][0] && this.state.novels[key]}
+          />
         ))}
       </div>
     );

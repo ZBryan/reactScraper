@@ -11,26 +11,23 @@ export async function getLinks(uri, baseUri, name, state, chunkSize) {
     }
   };
   let $ = await rp(options);
-  let aTag = $("a").not('[href^="/"],[href^="mailto:"],[href^="#"],[title=""]');
+  let aTag = $("a").not('[href^="/"],[href^="mailto:"],[href^="#"]');
   let promise = [];
   console.log("atag", aTag.length);
   aTag.each(function(index) {
     try {
       let title = $(this).text();
       let link = $(this).attr("href");
-      if (index < 10 && title) {
+      if (title) {
         if (!isAbsolute.test(link)) {
           link = baseUri + "/" + link;
         }
-        console.log("Index", index);
+        // console.log("Index", index);
         let existingChp = null;
         //If the novel exists
-        let chunk = Math.floor(index / chunkSize);
-        console.log("chunk", chunk);
+        let chunk = Math.floor(index / chunkSize) * chunkSize;
         if (state[name] && state[name][chunk]) {
-          existingChp = state[name][chunk][index - 1];
-
-          console.log("existing chapter", existingChp);
+          existingChp = state[name][chunk][index - 1 - chunk];
         }
         if (!existingChp) {
           let chapter = iterator(title, link, index);

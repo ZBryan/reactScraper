@@ -19,7 +19,7 @@ class NovelPicker extends Component {
       this.props.existing,
       this.props.chunkSize
     );
-    console.log("d", data);
+    // console.log("d", data);
     let chp = { name, data };
     // console.log(chp);
     this.props.passDataToState(chp);
